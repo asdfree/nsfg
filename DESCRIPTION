@@ -4,7 +4,7 @@ Title: nsfg
 Version: 0.1.0
 Author: Anthony Joseph Damico
 Maintainer: Anthony Joseph Damico <ajdamico@gmail.com>
-Description: A continuous integration package.
+Description: A continuous integration package, tested on ajdamico/asdfree commit 0533fdae6ae71d4517fc9e8148495c1099dd57c6 ajdamico/lodown commit 6aea9721dfb2bf26cb5a4c05bd38a6d161770c67
 License: GPL-3
 Imports: survey, lodown, srvyr
 Encoding: UTF-8

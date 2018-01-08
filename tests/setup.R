@@ -11,7 +11,7 @@ nsfg_cat <-
 # 2013-2015 only
 nsfg_cat <- subset( nsfg_cat , grepl( "2013_2015" , full_url ) )
 # download the microdata to your local computer
-lodown( "nsfg" , nsfg_cat )
+
 
 options( survey.lonely.psu = "adjust" )
 

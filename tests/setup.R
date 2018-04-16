@@ -141,4 +141,13 @@ nsfg_srvyr_design %>%
 nsfg_srvyr_design %>%
 	group_by( age_categories ) %>%
 	summarize( mean = survey_mean( npregs_s , na.rm = TRUE ) )
+stopifnot( round( coef( svytotal( ~ one , nsfg_design ) ) , 0 ) == 61491766 )
+row_percents <- c( 16.1723 , 27.8173 , 18.7197 , 13.4367 , 9.0851 , 7.7224 )
 
+std_err_row_percents <- c( 1.5414 , 2.4162 , 1.9890 , 1.5074 , 1.5222 , 1.6053 )
+
+results <- svyby( ~ as.numeric( constat1 == 6 ) , ~ age_categories , nsfg_design , svymean )
+
+stopifnot( all( round( coef( results ) * 100 , 4 ) == row_percents ) )
+
+stopifnot( all( round( SE( results ) * 100 , 4 ) == std_err_row_percents ) )

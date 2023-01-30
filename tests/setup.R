@@ -72,22 +72,22 @@ svyby( ~ one , ~ age_categories , nsfg_design , unwtd.count )
 svytotal( ~ one , nsfg_design )
 
 svyby( ~ one , ~ age_categories , nsfg_design , svytotal )
-svymean( ~ npregs_s , nsfg_design , na.rm = TRUE )
+svymean( ~ pregnum , nsfg_design , na.rm = TRUE )
 
-svyby( ~ npregs_s , ~ age_categories , nsfg_design , svymean , na.rm = TRUE )
+svyby( ~ pregnum , ~ age_categories , nsfg_design , svymean , na.rm = TRUE )
 svymean( ~ marstat , nsfg_design )
 
 svyby( ~ marstat , ~ age_categories , nsfg_design , svymean )
-svytotal( ~ npregs_s , nsfg_design , na.rm = TRUE )
+svytotal( ~ pregnum , nsfg_design , na.rm = TRUE )
 
-svyby( ~ npregs_s , ~ age_categories , nsfg_design , svytotal , na.rm = TRUE )
+svyby( ~ pregnum , ~ age_categories , nsfg_design , svytotal , na.rm = TRUE )
 svytotal( ~ marstat , nsfg_design )
 
 svyby( ~ marstat , ~ age_categories , nsfg_design , svytotal )
-svyquantile( ~ npregs_s , nsfg_design , 0.5 , na.rm = TRUE )
+svyquantile( ~ pregnum , nsfg_design , 0.5 , na.rm = TRUE )
 
 svyby( 
-	~ npregs_s , 
+	~ pregnum , 
 	~ age_categories , 
 	nsfg_design , 
 	svyquantile , 
@@ -95,14 +95,14 @@ svyby(
 	ci = TRUE , na.rm = TRUE
 )
 svyratio( 
-	numerator = ~ npregs_s , 
-	denominator = ~ nbabes_s , 
+	numerator = ~ pregnum , 
+	denominator = ~ lbpregs , 
 	nsfg_design ,
 	na.rm = TRUE
 )
 sub_nsfg_design <- subset( nsfg_design , timescoh > 0 )
-svymean( ~ npregs_s , sub_nsfg_design , na.rm = TRUE )
-this_result <- svymean( ~ npregs_s , nsfg_design , na.rm = TRUE )
+svymean( ~ pregnum , sub_nsfg_design , na.rm = TRUE )
+this_result <- svymean( ~ pregnum , nsfg_design , na.rm = TRUE )
 
 coef( this_result )
 SE( this_result )
@@ -111,7 +111,7 @@ cv( this_result )
 
 grouped_result <-
 	svyby( 
-		~ npregs_s , 
+		~ pregnum , 
 		~ age_categories , 
 		nsfg_design , 
 		svymean ,
@@ -123,22 +123,22 @@ SE( grouped_result )
 confint( grouped_result )
 cv( grouped_result )
 degf( nsfg_design )
-svyvar( ~ npregs_s , nsfg_design , na.rm = TRUE )
+svyvar( ~ pregnum , nsfg_design , na.rm = TRUE )
 # SRS without replacement
-svymean( ~ npregs_s , nsfg_design , na.rm = TRUE , deff = TRUE )
+svymean( ~ pregnum , nsfg_design , na.rm = TRUE , deff = TRUE )
 
 # SRS with replacement
-svymean( ~ npregs_s , nsfg_design , na.rm = TRUE , deff = "replace" )
+svymean( ~ pregnum , nsfg_design , na.rm = TRUE , deff = "replace" )
 svyciprop( ~ birth_control_pill , nsfg_design ,
 	method = "likelihood" , na.rm = TRUE )
-svyttest( npregs_s ~ birth_control_pill , nsfg_design )
+svyttest( pregnum ~ birth_control_pill , nsfg_design )
 svychisq( 
 	~ birth_control_pill + marstat , 
 	nsfg_design 
 )
 glm_result <- 
 	svyglm( 
-		npregs_s ~ birth_control_pill + marstat , 
+		pregnum ~ birth_control_pill + marstat , 
 		nsfg_design 
 	)
 
@@ -146,11 +146,11 @@ summary( glm_result )
 library(srvyr)
 nsfg_srvyr_design <- as_survey( nsfg_design )
 nsfg_srvyr_design %>%
-	summarize( mean = survey_mean( npregs_s , na.rm = TRUE ) )
+	summarize( mean = survey_mean( pregnum , na.rm = TRUE ) )
 
 nsfg_srvyr_design %>%
 	group_by( age_categories ) %>%
-	summarize( mean = survey_mean( npregs_s , na.rm = TRUE ) )
+	summarize( mean = survey_mean( pregnum , na.rm = TRUE ) )
 result <- svytotal( ~ one , nsfg_design )
 
 stopifnot( round( coef( result ) , 0 ) == 72671926 )

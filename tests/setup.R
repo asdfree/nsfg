@@ -8,11 +8,7 @@ dat_url <-
 	"https://ftp.cdc.gov/pub/Health_Statistics/NCHS/Datasets/NSFG/2017_2019_FemRespData.dat"
 
 sas_url <-
-	file.path(
-		dirname( dat_url ) , 
-		"sas" , 
-		gsub( "Data" , "Setup" , basename( dat_url ) )
-	)
+	file.path( dirname( dat_url ) , "sas/2017_2019_FemRespSetup.sas" )
 	
 sas_positions <-
 	parse.SAScii( sas_url )

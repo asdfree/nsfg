@@ -31,7 +31,6 @@ nsfg_tbl <-
 	)
 	
 nsfg_df <- data.frame( nsfg_tbl )
-
 options( survey.lonely.psu = "adjust" )
 
 library(survey)

@@ -148,14 +148,6 @@ glm_result <-
 	)
 
 summary( glm_result )
-library(srvyr)
-nsfg_srvyr_design <- as_survey( nsfg_design )
-nsfg_srvyr_design %>%
-	summarize( mean = survey_mean( pregnum , na.rm = TRUE ) )
-
-nsfg_srvyr_design %>%
-	group_by( age_categories ) %>%
-	summarize( mean = survey_mean( pregnum , na.rm = TRUE ) )
 result <- svytotal( ~ one , nsfg_design )
 
 stopifnot( round( coef( result ) , 0 ) == 72671926 )
@@ -170,3 +162,11 @@ results <- svyby( ~ birth_control_pill , ~ age_categories , nsfg_design , svymea
 stopifnot( all( round( coef( results ) * 100 , 4 ) == row_percents ) )
 
 stopifnot( all( round( SE( results ) * 100 , 4 ) == std_err_row_percents ) )
+library(srvyr)
+nsfg_srvyr_design <- as_survey( nsfg_design )
+nsfg_srvyr_design %>%
+	summarize( mean = survey_mean( pregnum , na.rm = TRUE ) )
+
+nsfg_srvyr_design %>%
+	group_by( age_categories ) %>%
+	summarize( mean = survey_mean( pregnum , na.rm = TRUE ) )

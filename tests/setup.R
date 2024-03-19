@@ -34,9 +34,9 @@ nsfg_df <- data.frame( nsfg_tbl )
 # nsfg_fn <- file.path( path.expand( "~" ) , "NSFG" , "this_file.rds" )
 # saveRDS( nsfg_df , file = nsfg_fn , compress = FALSE )
 # nsfg_df <- readRDS( nsfg_fn )
-options( survey.lonely.psu = "adjust" )
-
 library(survey)
+
+options( survey.lonely.psu = "adjust" )
 
 nsfg_design <- 
 	svydesign( 

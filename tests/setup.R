@@ -1,36 +1,16 @@
 # family structure
 # questions cuz radar fails at
 # storks with bassinets
-library(SAScii)
-library(readr)
-
-dat_url <-
-	"https://ftp.cdc.gov/pub/Health_Statistics/NCHS/Datasets/NSFG/2017_2019_FemRespData.dat"
+library(haven)
 
 sas_url <-
-	file.path( dirname( dat_url ) , "sas/2017_2019_FemRespSetup.sas" )
+	"https://ftp.cdc.gov/pub/Health_Statistics/NCHS/NSFG/NSFG-2022-2023-FemRespPUFData.sas7bdat"
 	
-sas_positions <-
-	parse.SAScii( sas_url )
-
-sas_positions[ , 'varname' ] <-
-	tolower( sas_positions[ , 'varname' ] )
-
-sas_positions[ , 'column_types' ] <-
-		ifelse( sas_positions[ , 'char' ] , "c" , "d" )
-
-nsfg_tbl <-
-	read_fwf(
-		dat_url ,
-		fwf_widths( 
-			abs( sas_positions[ , 'width' ] ) , 
-			col_names = sas_positions[ , 'varname' ] 
-		) ,
-		col_types = paste0( sas_positions[ , 'column_types' ] , collapse = "" ) ,
-		na = c( "" , "." )
-	)
+nsfg_tbl <- read_sas( sas_url )
 	
 nsfg_df <- data.frame( nsfg_tbl )
+
+names( nsfg_df ) <- tolower( names( nsfg_df ) )
 # nsfg_fn <- file.path( path.expand( "~" ) , "NSFG" , "this_file.rds" )
 # saveRDS( nsfg_df , file = nsfg_fn , compress = FALSE )
 # nsfg_df <- readRDS( nsfg_fn )
@@ -40,10 +20,10 @@ options( survey.lonely.psu = "adjust" )
 
 nsfg_design <- 
 	svydesign( 
-		id = ~ secu , 
-		strata = ~ sest , 
+		id = ~ vecl , 
+		strata = ~ vest , 
 		data = nsfg_df , 
-		weights = ~ wgt2017_2019 , 
+		weights = ~ wgt2022_2023 , 
 		nest = TRUE 
 	)
 nsfg_design <- 
@@ -150,12 +130,12 @@ glm_result <-
 summary( glm_result )
 result <- svytotal( ~ one , nsfg_design )
 
-stopifnot( round( coef( result ) , 0 ) == 72671926 )
+stopifnot( round( coef( result ) , 0 ) == 74936918 )
 
-stopifnot( round( SE( result ) , 0 ) == 3521465 )
-row_percents <- c( 19.5112 , 23.7833 , 19.6916 , 15.2800 , 6.4965 , 6.5215 )
+stopifnot( round( SE( result ) , 0 ) == 2910451 )
+row_percents <- c( 14.2348 , 18.9586 , 14.6057 , 10.1973 , 7.8114 , 6.8632 )
 
-std_err_row_percents <- c( 1.8670 , 2.1713 , 2.2773 , 1.7551 , 0.9895 , 1.0029 )
+std_err_row_percents <- c( 1.6792 , 2.0226 , 1.8889 , 1.3836 , 1.1050 , 0.7961 )
 
 results <- svyby( ~ birth_control_pill , ~ age_categories , nsfg_design , svymean )
 

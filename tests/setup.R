@@ -85,7 +85,7 @@ svyratio(
 	nsfg_design ,
 	na.rm = TRUE
 )
-sub_nsfg_design <- subset( nsfg_design , timescoh > 0 )
+sub_nsfg_design <- subset( nsfg_design , evrcohab == 1 )
 svymean( ~ pregnum , sub_nsfg_design , na.rm = TRUE )
 this_result <- svymean( ~ pregnum , nsfg_design , na.rm = TRUE )
 
